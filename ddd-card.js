@@ -4,6 +4,7 @@
  */
 import { html, css } from "lit";
 import { DDD } from "@haxtheweb/d-d-d/d-d-d.js";
+import { DDDDataAttributes } from "@haxtheweb/d-d-d/lib/DDDStyles";
 
 /**
  * `ddd-card`
@@ -24,6 +25,8 @@ export class DddCard extends DDD {
     this.image = "";
     this.link = "";
     this.loading = false;
+    this.primary = "";
+    this.accent = "";
   }
 
   // Lit reactive properties
@@ -37,6 +40,7 @@ export class DddCard extends DDD {
       image: { type: String },
       link: { type: String },
       loading: { type: Boolean, reflect: true },
+      primary: { String, Reflect: true, DDDDataAttributes: "data-primary" },
     };
   }
 
@@ -52,9 +56,10 @@ export class DddCard extends DDD {
           font-family: var(--ddd-font-navigation);
           border: 1 px solid var(--ddd-theme-color, #ccc);
           border-radius: var(--ddd-radius-sm);
-          padding: var(--ddd-spacing-3);
           border: var(--ddd-border-xs);
           width: 400px;
+          height: 600px;
+          padding: 0px;
         }
         .wrapper {
           margin: var(--ddd-spacing-2);
@@ -62,28 +67,43 @@ export class DddCard extends DDD {
         }
         img {
           max-width: 100%;
-          border-radius: var(--ddd-radius-md);
+          border-radius: var(--ddd-radius-sm);
+          border-bottom: 12px var(--ddd-theme-default-nittanyNavy) solid;
+          border-bottom-left-radius: 0px;
+          border-bottom-right-radius: 0px;
         }
         .details {
-          height: 200px;
+          height: 120px;
           overflow: hidden;
+          padding: var(--ddd-spacing-3);
+          margin: 0px;
         }
         .title {
-          font-weight: bold;
-          color: var(--ddd-primary-2);
+          font-size: var(
+            --link-preview-card-label-font-size,
+            var(--ddd-font-size-s)
+          );
+          color: var(--ddd-theme-default-nittanyNavy);
+          padding: var(--ddd-spacing-3);
+          margin: 10px 0px 10px 0px;
+          border-bottom: var(--ddd-spacing-1) solid var(--ddd-theme-primary);
         }
-        button {
-          padding: 15px;
-          // color: var(--ddd-primary-1);
-          border-radius: 10px;
-          background-color: #200760;
-          border-width: 3px;
-          font-size: 20px;
-          font-weight: bold;
+        .button a {
+          color: var(--ddd-theme-default-white);
+        }
+        .button {
+          background-color: var(--ddd-theme-default-link);
+          padding: 0px 140px;
+          margin: 0px 20px 50px 20px;
+          font-size: 16px;
+          font-weight: var(--ddd-font-weight-bold);
+          color: var(--ddd-theme-default-white);
+          border: none;
+          border-radius: 5px;
+          height: 50px;
         }
         button:hover {
-          background-color: blue;
-          color: #fff;
+          background-color: var(--ddd-theme-default-nittanyNavy);
         }
         @keyframes spin {
           0% {
@@ -104,33 +124,15 @@ export class DddCard extends DDD {
   // Lit render the HTML
   render() {
     return html`
-      <div class="wrapper" part="wrapper">
-        ${this.loading
-          ? html` <div class="loading-spinner" part="loading-spinner"></div> `
-          : html`
-              ${
-                this.image
-                  ? html` <img
-                      src="${this.image}"
-                      alt="Label"
-                      alt=""
-                      @error="${this.handleImageError}"
-                      part="image"
-                    />`
-                  : ""
-              }
-              <div class="content" part="content">
-                <h3 class="title" part="title">${this.title}</h3>
-
-               <div class="details" part="details"><slot></slot></div> 
-                <button class="details_button"><a href="${
-                  this.link
-                }" target="_blank">Explore ></a></button>
-        
-      </button>
-                  
-              </div>
-            `}
+      <div class="img-container" part="img-container">
+        ${this.image ? html`<img src="${this.image}" alt=${this.label} />` : ""}
+      </div>
+      <div class="content" part="content">
+        <h3 class="title" part="title">${this.title}</h3>
+        <div class="details" part="details"><slot></slot></div>
+        <button class="button">
+          <a href="${this.link}" target="_blank">Explore ></a>
+        </button>
       </div>
     `;
   }
