@@ -46,7 +46,6 @@ export class DddCardList extends DDDSuper(I18NMixin(LitElement)) {
       href: { type: String },
       image: { type: String },
       link: { type: String },
-      loading: { type: Boolean, reflect: true },
     };
   }
 
@@ -56,29 +55,38 @@ export class DddCardList extends DDDSuper(I18NMixin(LitElement)) {
       super.styles,
       css`
         :host {
-          display: block;
+          display: flex;
           color: var(--ddd-theme-primary);
           background-color: var(--ddd-theme-accent);
           font-family: var(--ddd-font-navigation);
         }
-        .wrapper {
-          margin: var(--ddd-spacing-2);
-          padding: var(--ddd-spacing-4);
+        slot {
+          display: grid;
+          grid-template-columns: repeat() (1, 1fr);
+          gap: 16px;
         }
-        .title-bar {
-          padding: var(--ddd-spacing-4);
-          margin: var(--ddd-spacing-2);
+        .wrapper {
+          display: flex;
+          background-color: var(--ddd-theme-accent);
+          padding-left: 26px;
+          padding-right: 26px;
+          padding-top: 60px;
+          padding-bottom: 60px;
         }
         div ::slotted(*) {
           display: inline-block;
         }
-
-        .loading-spinner {
-          margin: var(--ddd-spacing-0);
-          border: 8px solid #323ca8;
-          width: 20px;
-          height: 20px;
-          animation: spin 3s linear infinite;
+        @media screen and (min-width: 768px) {
+          .wrapper slot {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+          }
+        }
+        @media screen and (min-width: 1080px) {
+          .wrapper slot {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+          }
         }
         h3 span {
           font-size: var(

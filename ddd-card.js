@@ -24,7 +24,6 @@ export class DddCard extends DDD {
     this.href = "";
     this.image = "";
     this.link = "";
-    this.loading = false;
     this.primary = "";
     this.accent = "";
   }
@@ -39,7 +38,6 @@ export class DddCard extends DDD {
       href: { type: String },
       image: { type: String },
       link: { type: String },
-      loading: { type: Boolean, reflect: true },
       primary: { String, Reflect: true, DDDDataAttributes: "data-primary" },
     };
   }
@@ -57,26 +55,53 @@ export class DddCard extends DDD {
           border: 1 px solid var(--ddd-theme-color, #ccc);
           border-radius: var(--ddd-radius-sm);
           border: var(--ddd-border-xs);
-          width: 400px;
-          height: 600px;
-          padding: 0px;
-        }
-        .wrapper {
-          margin: var(--ddd-spacing-2);
-          padding: var(--ddd-spacing-4);
+          flex-wrap: nowrap;
+          position: static;
+          // width: 320px;
+          // height: 500px;
+          overflow: hidden;
+          box-sizing: border-box;
+          margin: 16px;
+          // padding: 0px;
         }
         img {
-          max-width: 100%;
+          width: 100%;
           border-radius: var(--ddd-radius-sm);
           border-bottom: 12px var(--ddd-theme-default-nittanyNavy) solid;
           border-bottom-left-radius: 0px;
           border-bottom-right-radius: 0px;
+          border-top-left-radius: var(--ddd-radius-sm);
+          border-top-right-radius: var(--ddd-radius-sm);
+          height: auto;
+          overflow: hidden;
+          max-width: 100%;
         }
         .details {
           height: 120px;
           overflow: hidden;
           padding: var(--ddd-spacing-3);
           margin: 0px;
+        }
+        #card-bottom {
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          padding: 16px 16px 20px 16px;
+        }
+        .wrapper {
+          display: flex;
+          border-top-width: 12px;
+          border-bottom-width: 0px;
+          box-sizing: content-box;
+          border-style: solid;
+          border-color: var(--ddd-theme-primary);
+          border-radius: var(--ddd-radius-sm);
+          height: 100%;
+          width: 100%;
+          height: 180px;
+          flex-wrap: nowrap;
+          flex-direction: column;
         }
         .title {
           font-size: var(
@@ -85,25 +110,30 @@ export class DddCard extends DDD {
           );
           color: var(--ddd-theme-default-nittanyNavy);
           padding: var(--ddd-spacing-3);
-          margin: 10px 0px 10px 0px;
-          border-bottom: var(--ddd-spacing-1) solid var(--ddd-theme-primary);
+          margin-bottom: 8px;
+          /* border-bottom: var(--ddd-spacing-1) solid var(--ddd-theme-primary); */
         }
         .button a {
           color: var(--ddd-theme-default-white);
         }
         .button {
-          background-color: var(--ddd-theme-default-link);
-          padding: 0px 140px;
-          margin: 0px 20px 50px 20px;
+          height: 100%;
+          font-family: var(--ddd-font-navigation);
+          align-items: center;
+          justify-content: center;
+          margin-top: auto;
+          padding: 12px 24px 12px 16px;
+          //  height: fit-content;
+          width: 100%;
           font-size: 16px;
-          font-weight: var(--ddd-font-weight-bold);
-          color: var(--ddd-theme-default-white);
-          border: none;
-          border-radius: 5px;
-          height: 50px;
+          border-radius: 4px;
+          color: white;
+          background-color: rgb(0, 95, 169);
+          border: 2px solid rgb(0, 95, 169);
         }
         button:hover {
-          background-color: var(--ddd-theme-default-nittanyNavy);
+          background-color: var(--ddd-theme-primary);
+          border-color: var(--ddd-theme-primary);
         }
         @keyframes spin {
           0% {
@@ -117,6 +147,10 @@ export class DddCard extends DDD {
           font-size: var(--ddd-card-label-font-size, var(--ddd-font-size-s));
           border-bottom: var(--ddd-spacing-1) solid var(--ddd-theme-primary);
         }
+        a:link,
+        a:visited {
+          background-color: var(--ddd-theme-default-link);
+        }
       `,
     ];
   }
@@ -128,6 +162,7 @@ export class DddCard extends DDD {
         ${this.image ? html`<img src="${this.image}" alt=${this.label} />` : ""}
       </div>
       <div class="content" part="content">
+        <div id="card-bottom"></div>
         <h3 class="title" part="title">${this.title}</h3>
         <div class="details" part="details"><slot></slot></div>
         <button class="button">
