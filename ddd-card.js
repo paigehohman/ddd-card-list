@@ -51,25 +51,22 @@ export class DddCard extends DDD {
           display: block;
           color: var(--ddd-theme-primary);
           background-color: var(--ddd-theme-accent);
-          font-family: var(--ddd-font-navigation);
+          font-family: var(--ddd-font-primary);
           border: 1 px solid var(--ddd-theme-color, #ccc);
           border-radius: var(--ddd-radius-sm);
           border: var(--ddd-border-xs);
           flex-wrap: nowrap;
           position: static;
-          // width: 320px;
-          // height: 500px;
           overflow: hidden;
           box-sizing: border-box;
-          margin: 16px;
-          // padding: 0px;
+          margin: var(--ddd-spacing-4);
         }
         img {
           width: 100%;
           border-radius: var(--ddd-radius-sm);
           border-bottom: 12px var(--ddd-theme-default-nittanyNavy) solid;
-          border-bottom-left-radius: 0px;
-          border-bottom-right-radius: 0px;
+          border-bottom-left-radius: var(--ddd-radius-0);
+          border-bottom-right-radius: var(--ddd-radius-0);
           border-top-left-radius: var(--ddd-radius-sm);
           border-top-right-radius: var(--ddd-radius-sm);
           height: auto;
@@ -77,10 +74,11 @@ export class DddCard extends DDD {
           max-width: 100%;
         }
         .details {
-          height: 120px;
-          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          flex-grow: 1;
           padding: var(--ddd-spacing-3);
-          margin: 0px;
         }
         #card-bottom {
           height: 100%;
@@ -91,8 +89,8 @@ export class DddCard extends DDD {
         }
         .wrapper {
           display: flex;
-          border-top-width: 12px;
-          border-bottom-width: 0px;
+          border-top-width: var(--ddd-border-size-lg);
+          border-bottom-width: var(--ddd-border-size-xs);
           box-sizing: content-box;
           border-style: solid;
           border-color: var(--ddd-theme-primary);
@@ -104,36 +102,67 @@ export class DddCard extends DDD {
           flex-direction: column;
         }
         .title {
-          font-size: var(
-            --link-preview-card-label-font-size,
-            var(--ddd-font-size-s)
-          );
+          font-size: var(--ddd-font-size-3xs);
+          margin: var(--ddd-spacing-0);
           color: var(--ddd-theme-default-nittanyNavy);
           padding: var(--ddd-spacing-3);
-          margin-bottom: 8px;
-          /* border-bottom: var(--ddd-spacing-1) solid var(--ddd-theme-primary); */
+          margin-bottom: var(--ddd-spacing-2);
         }
-        .button a {
-          color: var(--ddd-theme-default-white);
+        .card-text p {
+          font-size: var(--ddd-font-size-3xs);
+          line-height: normal;
+          white-space: pre-line;
+          font-weight: var(--ddd-font-weight-regular);
+          line-height: var(--ddd-lh-150);
+          letter-spacing: normal;
+          color: var(--ddd-theme-default-coalyGray);
+          margin-bottom: 0rem;
+          margin-top: var(--ddd-spacing-3);
+          margin-bottom: var(--ddd-spacing-2);
+          white-space: pre-line;
+          margin: var(--ddd-spacing-0);
+          font-family: var(--ddd-font-primary);
         }
-        .button {
+        .card button {
           height: 100%;
-          font-family: var(--ddd-font-navigation);
+          transition: all 0.2s ease-out;
+          font-family: var(--ddd-font-primary);
           align-items: center;
           justify-content: center;
           margin-top: auto;
           padding: 12px 24px 12px 16px;
-          //  height: fit-content;
+          height: fit-content;
           width: 100%;
-          font-size: 16px;
-          border-radius: 4px;
-          color: white;
+          font-weight: var(--ddd-font-weight-medium);
+          font-size: var(--ddd-font-size-4xs);
+          border-radius: var(--ddd-radius-xs);
+          color: var(--ddd-theme-default-white);
           background-color: rgb(0, 95, 169);
-          border: 2px solid rgb(0, 95, 169);
+          border: var(--ddd-border-sm);
         }
-        button:hover {
+        .button a {
+          color: var(--ddd-theme-default-white);
+        }
+        a.button {
+          display: block;
+          text-align: center;
+          text-decoration: none;
+          padding: 12px 0;
+          margin-top: auto;
+          width: 100%;
+          font-size: var(--ddd-font-size-4xs);
+          border-radius: var(--ddd-radius-xs);
+          color: var(--ddd-theme-default-white);
+          background-color: rgb(0, 95, 169);
+          border: var(--ddd-border-sm);
+          font-family: var(--ddd-font-navigation);
+          transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        a.button:hover {
           background-color: var(--ddd-theme-primary);
           border-color: var(--ddd-theme-primary);
+          color: var(--ddd-theme-default-white);
         }
         @keyframes spin {
           0% {
@@ -144,6 +173,8 @@ export class DddCard extends DDD {
           }
         }
         h3 span {
+          margin: var(--ddd-spacing-0);
+          line-height: var(--ddd-lh-120);
           font-size: var(--ddd-card-label-font-size, var(--ddd-font-size-s));
           border-bottom: var(--ddd-spacing-1) solid var(--ddd-theme-primary);
         }
@@ -162,12 +193,13 @@ export class DddCard extends DDD {
         ${this.image ? html`<img src="${this.image}" alt=${this.label} />` : ""}
       </div>
       <div class="content" part="content">
-        <div id="card-bottom"></div>
-        <h3 class="title" part="title">${this.title}</h3>
-        <div class="details" part="details"><slot></slot></div>
-        <button class="button">
-          <a href="${this.link}" target="_blank">Explore ></a>
-        </button>
+        <div id="card-bottom">
+          <div class="card-text">
+            <h3 class="title" part="title">${this.title}</h3>
+            <div class="details" part="details"><slot></slot></div>
+            <a class="button" href="${this.link}" target="_blank">Explore ></a>
+          </div>
+        </div>
       </div>
     `;
   }
